@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -13,10 +14,18 @@ namespace RMotownFestival.Api.Controllers
     [ApiController]
     public class FestivalController : ControllerBase
     {
+        private readonly MotownDbContext _context;
+
+        public FestivalController(MotownDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet("LineUp")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Schedule))]
         public ActionResult GetLineUp()
         {
+            //throw new ApplicationException("LineUp failed!");
             return Ok(FestivalDataSource.Current.LineUp);
         }
 
@@ -24,7 +33,10 @@ namespace RMotownFestival.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<Artist>))]
         public ActionResult GetArtists()
         {
-            return Ok(FestivalDataSource.Current.Artists);
+            var artists = _context.Artists.ToList();
+
+            return Ok(artists);
+            //return Ok(FestivalDataSource.Current.Artists);
         }
 
         [HttpGet("Stages")]

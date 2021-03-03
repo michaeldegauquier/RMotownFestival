@@ -49,7 +49,7 @@ namespace RMotownFestival.Api.Data
 
         public static void Initialize(MotownDbContext context)
         {
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             if (context.Stages.Any())
             {

@@ -3,9 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>2cccfa65-b986-4521-8e5b-7e0c38c85121</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/b7cf2ccb-201f-4865-824d-606acc076935/resourceGroups/AzureTrackLab/providers/microsoft.insights/components/RMotownFestivalInsightsSL</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.8.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

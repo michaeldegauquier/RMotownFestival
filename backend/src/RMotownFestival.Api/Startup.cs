@@ -1,10 +1,13 @@
 
+using Azure.Storage;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RMotownFestival.Api.Common;
 using RMotownFestival.Api.Data;
 using RMotownFestival.Api.Options;
 
@@ -22,6 +25,16 @@ namespace RMotownFestival.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(p => new StorageSharedKeyCredential(
+                Configuration.GetValue<string>("Storage:AccountName"),
+                Configuration.GetValue<string>("Storage:AccountKey")));
+
+            services.AddSingleton(p => new BlobServiceClient(Configuration.GetValue<string>("Storage:ConnectionString")));
+
+            services.AddSingleton<BlobUtility>();
+
+            services.Configure<BlobSettingsOptions>(Configuration.GetSection("Storage"));
+
             services.Configure<AppSettingsOptions>(Configuration);
 
             services.AddCors();
@@ -29,6 +42,8 @@ namespace RMotownFestival.Api
 
             services.AddDbContext<MotownDbContext>(options =>
                 options.UseSqlServer("name=ConnectionString:DefaultConnection"));
+
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
